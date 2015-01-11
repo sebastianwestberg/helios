@@ -1,11 +1,9 @@
 {
-	"name": "helios/helios",
-	"description": "Helios - probably the simpliest container for dependency injection.",
+    "name": "helios/helios",
+    "description": "Helios - probably the simpliest container for dependency injection.",
     "autoload": {
         "psr-0": { "Helios": "src/" }
     },
     "require": {
-        "twig/twig": "~1.16",
-        "pimple/pimple": "~3.0"
     }
 }
