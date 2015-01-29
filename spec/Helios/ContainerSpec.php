@@ -18,4 +18,23 @@ class ContainerSpec extends ObjectBehavior
         $this->shouldHaveKey('asdf');
         $this['asdf']->shouldBeLike('fdsa');
     }
+
+    function it_resolves_services_once()
+    {
+	$uniqueId = '';
+        $this['foo'] = function() use ($uniqueId) { 
+            return $uniqueId = uniqid();
+        };
+
+        $this['foo']->shouldBeLike($this['foo']);
+    }
+
+    function it_resolves_services()
+    {
+        $this['foo'] = function() {
+            return 'asdf';
+        };
+
+        $this['foo']->shouldBeLike('asdf');
+    }
 }

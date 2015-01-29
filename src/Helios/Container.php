@@ -22,11 +22,13 @@ class Container implements \ArrayAccess
             throw new \InvalidArgumentException(sprintf("'%s' is not recognized by the container", $offset));
         }
 
-        if (is_object($storageEntry = $this->storage[$offset])) {
-            return $storageEntry($this);
-        } else {
-            return $storageEntry;
+        $storageEntry = $this->storage[$offset];
+
+        if (is_object($storageEntry)) {
+            return $this->storage[$offset] = $storageEntry();
         }
+
+        return $storageEntry;
     }
 
     public function offsetSet($offset, $value)
