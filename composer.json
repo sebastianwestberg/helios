@@ -5,5 +5,11 @@
         "psr-0": { "Helios": "src/" }
     },
     "require": {
+    },
+    "require-dev": {
+        "phpspec/phpspec": "~2.0"
+    },
+    "config": {
+        "bin-dir": "bin"
     }
 }
