@@ -19,6 +19,15 @@ class ContainerSpec extends ObjectBehavior
         $this['asdf']->shouldBeLike('fdsa');
     }
 
+    function it_resolves_services()
+    {
+        $this['foo'] = function() {
+            return 'asdf';
+        };
+
+        $this['foo']->shouldBeLike('asdf');
+    }
+
     function it_resolves_services_once()
     {
 	$uniqueId = '';
@@ -29,12 +38,19 @@ class ContainerSpec extends ObjectBehavior
         $this['foo']->shouldBeLike($this['foo']);
     }
 
-    function it_resolves_services()
+    function it_resolves_services_only_once()
     {
-        $this['foo'] = function() {
-            return 'asdf';
-        };
+        $this['foo'] = function() { return function() { return 'asdf'; }; };
+        $this['foo']->shouldBeFunction();
+        $this['foo']->shouldBeFunction();
+    }
 
-        $this['foo']->shouldBeLike('asdf');
+    public function getMatchers()
+    {
+        return [
+            'beFunction' => function($subject) {
+                return is_object($subject);
+            },
+        ];
     }
 }

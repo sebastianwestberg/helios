@@ -5,6 +5,7 @@ namespace Helios;
 class Container implements \ArrayAccess
 {
     private $storage = array();
+    private $resolvedStorage = array();
 
     public function __construct()
     {
@@ -18,6 +19,11 @@ class Container implements \ArrayAccess
 
     public function offsetGet($offset)
     {
+
+        if (isset($this->resolvedStorage[$offset])) {
+            return $this->resolvedStorage[$offset];
+        }
+
         if (!isset($this->storage[$offset])) {
             throw new \InvalidArgumentException(sprintf("'%s' is not recognized by the container", $offset));
         }
@@ -25,7 +31,7 @@ class Container implements \ArrayAccess
         $storageEntry = $this->storage[$offset];
 
         if (is_object($storageEntry)) {
-            return $this->storage[$offset] = $storageEntry();
+            return $this->resolvedStorage[$offset] = $storageEntry();
         }
 
         return $storageEntry;
